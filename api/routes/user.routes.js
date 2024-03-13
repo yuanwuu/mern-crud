@@ -1,17 +1,15 @@
 import express from 'express'
-import User from '../models/user.model.js'
+// import User from '../models/user.model.js'
+
+import {getUsers,registerUser,deleteUser, loginUser,logout} from '../controllers/user.controller.js'
 
 const router = express.Router()
 
-router.get('/about',(req,res)=>{
-    res.status(200).json({msg:'hello user'})
-})
+router.get('/',getUsers)
+router.post('/signup',registerUser)
+router.post('/login',loginUser)
+router.post('/logout',logout)
+router.delete('/delete/:id',deleteUser)
 
-router.post('/create',async(req,res)=>{
-    const {username} = req.body
-    const newUser = await User.create({username})
-    
-    res.status(200).json({msg:'hello test_1'})
-})
 
 export { router as userRoutes}

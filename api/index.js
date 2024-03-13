@@ -2,6 +2,7 @@ import 'dotenv/config'
 import express from 'express'
 import mongoose from 'mongoose'
 import { userRoutes } from './routes/user.routes.js'
+import { postRoutes } from './routes/post.routes.js'
 
 const app = express()
 const PORT = 3000 || process.env.PORT
@@ -21,3 +22,4 @@ dbConn()
 app.use(express.json())
 
 app.use('/api/user',userRoutes)
+app.use('/api/post',postRoutes)
