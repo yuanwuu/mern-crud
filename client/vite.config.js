@@ -1,5 +1,8 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+
+import {defineConfig} from 'vite'
+
+export default defineConfig ({
   content: [
     "./index.html",
     "./src/**/*.{js,ts,jsx,tsx}",
@@ -8,4 +11,13 @@ export default {
     extend: {},
   },
   plugins: [],
-}
+  server: {
+    proxy:{
+      '/api':{
+        target:'http://localhost:3000',
+        changeOrigin:true,
+        secure:false
+      }
+    }
+  }
+})

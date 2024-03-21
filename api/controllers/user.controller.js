@@ -24,9 +24,9 @@ export const getUsers = async (req,res)=>{
 
 //----------------------------------------- POST: REGISTER A USER -----------------------------------------
 export const registerUser = async(req,res)=>{
-    const {username, email, password} = req.body
+    const {email, password} = req.body
 
-    if(!email || !password || !username){
+    if(!email || !password){
         return res.status(400).json({error:'all fields are required'})
     }
     
@@ -40,7 +40,7 @@ export const registerUser = async(req,res)=>{
     const hashedPwd = await bcrypt.hash(password,salt)
 
     try {
-        const user = await User.create({username,email,password: hashedPwd})
+        const user = await User.create({email,password: hashedPwd})
         const token = createToken(user._id)
         res.status(200).json({email,token})
 
@@ -78,21 +78,21 @@ export const updateUser = async(req,res) =>{
 
 //----------------------------------------- POST: LOGIN -----------------------------------------
 export const loginUser = async(req,res) =>{
-    const {email,password,username} = req.body
-    if(!email || !password || !username){
-        return res.status(400).json({error:'all fields are required'})
+    const {email,password} = req.body
+    if(!email || !password){
+        return res.status(400).json({error:'all fields are required, /api login user'})
     }
     
     const user = await User.findOne({ email })
     // console.log(user.password);
     if(!user){
-        return res.status(400).json({error:'incorrect email'})
+        return res.status(400).json({error:'incorrect email, /api login user'})
     }
 
     const matchPwd = await bcrypt.compare(password,user.password)
     console.log(matchPwd)
     if(!matchPwd){
-        return res.status(400).json({error:'incorrect password'})
+        return res.status(400).json({error:'incorrect password, /api login user'})
     }
     
     try {
