@@ -9,4 +9,13 @@ const getPosts = async() =>{
     return data
 }
 
-export default getPosts
+
+// get user posts
+
+
+
+
+
+
+
+export  { getPosts }
