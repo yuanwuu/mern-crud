@@ -14,6 +14,7 @@ export const auth = async(req,res,next)=>{
     try {
         const {_id} = jwt.verify(token, process.env.JWT_SECRET)
         req.user = await User.findById(_id).select('_id')
+    
         // console.log("req.user info:",req.user)
 
 
@@ -23,7 +24,3 @@ export const auth = async(req,res,next)=>{
         return res.status(401).json({error:error.message})
     }
 }
-
-
-  
-  

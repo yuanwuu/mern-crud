@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 import Post from '../models/post.model.js'
 import User from '../models/user.model.js'
-import {errorHandler} from '../utils/error.js'
-import {useLocation} from 'react-router-dom'
 
 //----------------------------------------- GET: INDEX ALL POSTS-----------------------------------------
 export const getAllPosts = async(req,res) =>{
@@ -19,14 +17,23 @@ export const getAllPosts = async(req,res) =>{
 
 //----------------------------------------- GET: INDEX USER POSTS-----------------------------------------
 export const getUserPosts = async(req,res) =>{
-    const user = await User.findById(req.user._id)
 
     try {
-        const userPosts = await Post.find({user:user._id}).sort({createdAt:'desc'})
-        res.status(200).json({userPosts})
-    
+        // Ensure req.user exists before accessing its properties
+        if (!req.user) {
+            return res.status(401).json({ error: "User not authenticated" });
+        }
+
+        
+        const user = await User.findById(req.user._id);
+        
+        
+        const userPosts = await Post.find({ user: user._id }).sort({ createdAt: 'desc' });
+        res.status(200).json({ userPosts });
+
     } catch (error) {
-        console.log(error)
+        console.log(error);
+        res.status(500).json({ error: error.message });
     }
 }
 
